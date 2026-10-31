@@ -46,8 +46,10 @@ int main() {
     }
   }
 
-  if (max > 0) /* there was a line */
+  if (max > 0) { /* there was a line */
+    printf("Length: %d\n", max);
     printf("%s", longest);
+  }
 
   return 0;
 }
