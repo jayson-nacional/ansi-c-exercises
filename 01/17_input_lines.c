@@ -1,3 +1,5 @@
+// Write a program to print all input lines that are longer than 80 characters.
+
 #include <stdio.h>
 
 #define MAXLINE 1000
@@ -10,7 +12,7 @@ int main() {
   char line[MAXLINE]; /* current input line */
 
   while ((len = get_line(line, MAXLINE)) > 0) {
-    if (len > 10)
+    if (len > 80)
       printf("%s", line);
   }
 
