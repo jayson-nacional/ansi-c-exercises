@@ -23,6 +23,11 @@ int main() {
       line[break_index] = '\0';
       printf("%s", line);
 
+      if (break_index < 0)
+        putchar('-');
+
+      putchar('\n');
+
       if (break_index > 0) {
         ++break_index;
         for (starting_index = 0; line[break_index] != '\0'; break_index++) {
@@ -32,15 +37,11 @@ int main() {
         starting_index = 0;
       }
 
-      putchar('\n');
       prev_len = len;
     } else {
       if (len == 1 && line[0] == '\n')
         ; // do nothing
       else {
-        if (prev_len == FOLD_LIMIT)
-          putchar('-');
-
         printf("%s\n", line);
         starting_index = 0;
       }
