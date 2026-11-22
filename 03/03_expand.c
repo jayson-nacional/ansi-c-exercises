@@ -11,7 +11,7 @@
 void expand(char s1[], char s2[]);
 
 int main() {
-  char s1[] = "a-z0-9a-b-c";
+  char s1[] = "a-z0-9a-b-cA-Z--";
   char s2[LIMIT];
 
   expand(s1, s2);
@@ -34,15 +34,13 @@ void expand(char s1[], char s2[]) {
 
   int p;
   for (j = 0; s1[i] != '\0'; i++) {
-    if (s1[i] == '-')
-      ;
-    else {
-      if (p == '-') {
-        if (s1[i] > s1[i - 2]) {
+    if (s1[i] != '-') {
+      if (p == '-') {            // check if for expansion
+        if (s1[i] > s1[i - 2]) { // valid range
           for (char k = s1[i - 2] + 1; k <= s1[i]; k++) {
-            s2[j++] = k;
+            s2[j++] = k; // expand
           }
-        } else {
+        } else { // print as is, invalid range
           s2[j++] = '-';
           s2[j++] = s1[i];
         }
@@ -53,4 +51,6 @@ void expand(char s1[], char s2[]) {
 
     p = s1[i];
   }
+
+  s2[j] = '\0';
 }
