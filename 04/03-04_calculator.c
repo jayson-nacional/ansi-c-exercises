@@ -7,17 +7,23 @@
 // duplicate it, and to swap the top two elements. Add a command to clear the
 // stack.
 
+#include <math.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h> /* for atof() */
 
 #define MAXOP 100  /* max size of operand or operator */
 #define NUMBER '0' /* signal that a number was found */
+#define SIN '1'
+#define EXP '2'
+#define POW '3'
 
 int getop(char[]);
 void push(double);
 double pop(void);
 double peek(void);
+void swap(void);
+void clear(void);
 
 /* reverse Polish calculator */
 int main() {
@@ -50,7 +56,7 @@ int main() {
     case '%': /* Exercise 3 */
       op2 = pop();
       if (op2 != 0.0)
-        push((int)pop() % (int)op2);
+        push(fmod(pop(), op2));
       else
         printf("error: zero divisor\n");
       break;
@@ -70,25 +76,28 @@ int main() {
 int sp = 0;         /* next free stack position */
 double val[MAXVAL]; /* value stack */
 
-void duplicate(double stack1[], double stack2[]) { /* Exercise 4 */
+void duplicate(double copyfrom[], double copyto[]) { /* Exercise 4 */
   if (sp > 0) {
     int i = 0;
     while (i < sp) {
-      stack2[i] = stack1[i];
+      copyto[i] = copyfrom[i];
       i++;
     }
+
+    copyto[i] = '\0';
   } else {
     printf("error: stack is empty\n");
   }
 }
 
-void swap(int pos1, int pos2) { /* Exercise 4 */
-  if (pos1 < sp && pos2 < sp) {
-    double temp = val[pos1];
-    val[pos1] = val[pos2];
-    val[pos2] = temp;
+void swap() { /* Exercise 4 */
+  if (sp >= 2) {
+    double temp1 = pop();
+    double temp2 = pop();
+    push(temp1);
+    push(temp2);
   } else {
-    printf("error: invalid stack index\n");
+    printf("error: cannot swap on a stack that has less than two items\n");
   }
 }
 
@@ -113,17 +122,19 @@ double pop(void) {
 /* peek: return the top element of the stack */
 double peek(void) { /* Exercise 4 */
   if (sp > 0) {
-    return val[sp];
+    return val[sp - 1];
   } else {
     printf("error: stack empty\n");
     return 0.0;
   }
 }
 
-/* clear: clear the stack
- * setting the next free element to 0 resets the stack
- */
-void clear(void) { sp = 0; } /* Exercise 4 */
+/* clear: clear the stack */
+void clear(void) { /* Exercise 4 */
+  while (sp > 0) {
+    pop();
+  }
+}
 
 #include <ctype.h>
 
